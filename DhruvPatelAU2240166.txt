@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{braket}
+\usepackage{hyperref}
+\setlength{\topmargin}{-.5in} \setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0in} \setlength{\textwidth}{6.8in}
+\newenvironment{solution}
+    {\textit{Solution:}}
+    {}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{remark}{Remark}
+\begin{document}
+
+\Large
+
+
+\noindent{\bf MAT 248: Assignment 2 (Section 1)  \hfill 17 November 2023}
+
+
+\medskip\hrule
+\vspace{.5cm}
+\noindent 
+
+\begin{enumerate}
+\item Problem (Dhruv, AU2240166): What is the physical significance of the determinant of a matrix?
+(What does the determinant of a matrix mean physically? How do I visualize it? (n.d.). Quora.)  \\ \\ 
+
+\begin{solution}
+    \textbf{Physically, the determinant of a matrix can have various interpretations depending on the context in which it is applied. Here are a few examples:}
+
+\begin{enumerate}
+    \item \textbf{Area and Volume:} In two- or three-dimensional space, the absolute value of the determinant of a matrix represents the area or volume of the region transformed by the associated linear transformation. For instance, if you have a$2 \times 2$ matrix, the determinant corresponds to the area scaling factor, while for a$3 \times 3$matrix, it represents the volume scaling factor. This interpretation is particularly useful in geometric transformations and calculations involving areas or volumes.
+    
+    \item \textbf{Linear Transformation:} The determinant provides insight into how a matrix affects vectors and their geometric properties. A positive determinant indicates that the transformation preserves orientation, meaning it does not mirror or reverse the vectors. A negative determinant implies a change in orientation, such as a reflection. This interpretation is applicable to transformations like rotations, shears, and reflections.
+    
+    \item \textbf{Change of Variables:} In certain mathematical applications, the determinant arises when performing a change of variables in integration. For example, in multivariable calculus, when transforming from one coordinate system to another, the determinant of the Jacobian matrix relates the differential volume elements in the two coordinate systems. It accounts for how the change of variables affects the scaling and orientation of the integration domain.
+    
+    \item \textbf{Physical Systems:} In physics, determinants can appear in various contexts. For instance, in quantum mechanics, the wave function of a particle is described by a complex-valued function, and the normalization of the wave function involves the determinant of a matrix known as the density matrix. In electromagnetism, determinants arise in calculations involving the electric and magnetic fields, such as finding the eigenvalues of the dielectric tensor or evaluating the behavior of electromagnetic waves in different media.
+\end{enumerate}
+
+\textbf{Overall, the physical interpretation of the determinant depends on the specific application or problem at hand. It can represent scaling factors, areas, volumes, orientation changes, and even the behaviour of physical quantities in different systems.}
+
+\end{solution}
+\begin{remark}
+    \textbf{\textit{I have taken this question from Quora.}}
+\end{remark}
+
+\item Problem(Dhruv, AU2240166)
+\begin{enumerate}
+       In the world of One Piece, there are as many Pirates as the stars in the world. Among those countless stars, only a few shine brightly. Among those few, only four Pirates are close to becoming the sun, Aka "The King Of The Pirates," by obtaining the One Piece containing everything that the world has to offer: wealth, fame, and power. \textbf{Red-haired Shanks}, \textbf{Blackbeard}, \textbf{Buggy the bombastic clown}, and \textbf{Monkey D. Luffy}. In the pirate world, fleets with the area value in the form of \(2n + 1\) are considered superior.
+      \newline  Currently, Red-haired Shanks and Monkey D. Luffy are fighting for the seat of the king. Give their fleets as matrix \(Luffy\) and \(Shanks\), where each entry of the matrix determines the area covered by the particular ship.
+     \newline   Among all the chaos, Blackbeard and Buggy the bombastic clown are planning to steal the One Piece and claim the throne for themselves.
+      \newline  (If only one of the fleets is with an area in the form of \(2n + 1\), that pirate will become The King of the Pirates. Otherwise, if both of them have the same form of \(2n + 1\), they both combine forces to fight Blackbeard and Buggy and take the crown. On the other hand, if they are not of the form \(2n + 1\), Blackbeard will beat them all and become The King of the Pirates.)
+      \newline Give the two matrices \(Luffy\) and \(Shanks\). Determine who will become The King of the Pirates.
+\end{enumerate}
+\begin{solution}
+    Note that $AA^T$ is symmetric (hence diagonalisable) and thus has real nonnegative eigenvalues. Indeed, if $v$ is a (non-zero) eigenvector corresponding to $\lambda$ of the matrix $AA^{T}$, then
+$$\lambda  ||v||^2=\lambda v^Tv= v^{T}(\lambda v)= v^T(AA^Tv)=||{A^Tv}||^2\geq0\implies\lambda\geq0.$$
+
+$(AA^T+I)$ is also symmetric and thus has real eigenvalues.
+
+Furthermore, $\lambda$ is an eigenvalue of $AA^T$ if and only if $\lambda+1$ is an eigenvalue of $AA^T+I$. In general, we prove the following lemma: 
+\begin{lemma}
+    $\lambda$ is an eigenvalue of $P$ if and only if $\lambda+1$ is an eigenvalue of $P+I$
+\end{lemma}
+\begin{proof}
+    Characteristic equation for the matrix $P$ is given by \[ f(x)= det(P+ xI)\] whereas the characteristic equation for $(P+I)$ is given by \[ g(x)= det(P+I + xI)= det (P+(x+1)I)= f(x+1)\]
+    Hence, the roots are differed by precisely $1$ concluding our claim. 
+\end{proof}
+Thus, specializing to $P= AA^{T}$ we get, 
+$$AA^Tv=\lambda v\iff(AA^T+I)\cdot v=(\lambda+1)\cdot v.$$
+
+Let $\lambda_1,\ldots,\lambda_n$ be the eigenvalues of $AA^T$ (with multiplicity, so they need not be different). Then
+$$\det(AA^T+I)=(\lambda_1+1)(\lambda_2+1)\cdots(\lambda_n+1)\geq1.$$
+\end{solution}
+\begin{remark}
+    The main proof was given by the user Bart Michels. I proved the lemma 0.2. 
+\end{remark}
+
+\end{enumerate}
+
+
+\end{document} 
