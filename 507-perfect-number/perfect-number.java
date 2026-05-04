@@ -16,8 +16,6 @@ class Solution {
                     ans += b;
                 }
             }
-
-            // System.out.println(ans);
         }
         return num==ans;
     }
