@@ -1,19 +1,33 @@
 class Solution {
     public String reverseStr(String s, int k) {
         int i = 0, n = s.length();
+        StringBuilder sb = new StringBuilder();
         while(i < n){
             if((n - i) > 2 * k){
-                s = reverseBetween(s, i, i + k - 1);
+                for(int j = i + k - 1; j >= i; j--){
+                    sb.append(s.charAt(j));
+                }
+                for(int j = i + k; j < (i + 2 * k); j++){
+                    sb.append(s.charAt(j));
+                }
                 i += 2 * k;
             } else if((n - i) >= k){
-                s = reverseBetween(s, i, i + k - 1);
+                for(int j = i + k - 1; j >= i; j--){
+                    sb.append(s.charAt(j));
+                }
+                // s = reverseBetween(s, i, i + k - 1);
+                sb.append(s.substring(i + k));
                 break;
             } else {
-                s = reverseBetween(s, i, n - 1);
+                // s = reverseBetween(s, i, n - 1);
+                for(int j = n - 1; j >= i; j--){
+                    sb.append(s.charAt(j));
+                }
+                // sb.append(s.substring(i, n));
                 break;
             }
         }
-        return s;
+        return sb.toString();
     }
 
     public static String reverseBetween(String s, int start, int end){
