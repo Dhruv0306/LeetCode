@@ -1,23 +1,11 @@
 class Solution {
-    public int rangeBitwiseAnd(int l, int r) {
-        if (l == r)
-            return l;
-        int ans = 0;
-        int maxSetBit = (int) (Math.log(r) / Math.log(2));
-
-        for (int bit = maxSetBit; bit >= 0; bit--) {
-            int andWithR = (r & (1 << bit));
-            int andWithL = (l & (1 << bit));
-
-            if (andWithR > 0 && andWithL > 0) {
-
-                ans = ans | (1 << bit);
-            }
-
-            else if (andWithR > 0 || andWithL > 0)
-                break;
+    public int rangeBitwiseAnd(int left, int right) {
+        int shift=0;
+        while(left < right){
+            left=left >>1;
+            right=right>>1;
+            shift++;
         }
-
-        return ans;
+        return left << shift;
     }
 }
