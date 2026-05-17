@@ -1,28 +1,27 @@
 class Solution {
     public boolean canReach(int[] arr, int start) {
-        int n = arr.length;
-        if (arr[start] == 0)
-            return true;
-        if (start - arr[start] >= 0 && arr[start - arr[start]] == 0)
-            return true;
-        if (start + arr[start] < n && arr[start + arr[start]] == 0)
-            return true;
-        Queue<Integer> inds = new LinkedList<>();
-        boolean[] visited = new boolean[n];
-        inds.add(start);
-        while (!inds.isEmpty()) {
-            int ind = inds.poll();
-            if (visited[ind])
-                continue;
-            if (arr[ind] == 0)
-                return true;
-            if (ind - arr[ind] >= 0)
-                inds.add(ind - arr[ind]);
-            if (ind + arr[ind] < n)
-                inds.add(ind + arr[ind]);
-            visited[ind] = true;
-        }
+        int N = arr.length;
+        boolean[] visited = new boolean[N];
+        boolean[] dp = new boolean[N];
+        return dfs(arr, visited, start, dp);
+    }
 
-        return false;
+    public boolean dfs(int[] arr, boolean[] visited, int index, boolean[] dp) {
+
+        visited[index] = true;
+
+        if (arr[index] == 0) {
+            dp[index] = true;
+            return dp[index];
+        }
+        int left = index - arr[index];
+        int right = index + arr[index];
+
+        boolean leftval = left >= 0 && !visited[left] && dfs(arr, visited, left, dp);
+        boolean rightval = right < arr.length && !visited[right] && dfs(arr, visited, right, dp);
+
+        dp[index] = leftval || rightval;
+
+        return dp[index];
     }
 }
