@@ -2,7 +2,6 @@ class Solution {
     public int minElement(int[] nums) {
         int n = nums.length;
 
-        // Method 1: 1ms + 44.95 MB
         int minSum = sumOfDigits(nums[0]);
         for (int i = 1; i < n; i++) {
             minSum = Math.min(minSum, sumOfDigits(nums[i]));
