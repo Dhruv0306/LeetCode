@@ -1,14 +1,16 @@
 class Solution {
     public int minimumCost(int[] cost) {
-        Arrays.sort(cost);
-        int sum = 0;
-        int n = cost.length;
-        for (int i = n - 1; i >= 0; i--) {
-            sum += cost[i] + ((i > 0) ? cost[i - 1] : 0);
-            i--;
-            i--;
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(Comparator.reverseOrder());
+        for (int i = 0; i < cost.length; i++) {
+            pq.add(cost[i]);
         }
-
-        return sum;
+        int ans = 0;
+        while (pq.size() > 0) {
+            int a = pq.poll();
+            int b = pq.size() > 0 ? pq.poll() : 0;
+            int c = pq.size() > 0 ? pq.poll() : 0;
+            ans += a + b;
+        }
+        return ans;
     }
 }
