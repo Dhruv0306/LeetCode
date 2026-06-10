@@ -4,6 +4,7 @@ class Solution {
         for (int i = 0; i < cost.length; i++) {
             pq.add(cost[i]);
         }
+        
         int ans = 0;
         while (pq.size() > 0) {
             int a = pq.poll();
