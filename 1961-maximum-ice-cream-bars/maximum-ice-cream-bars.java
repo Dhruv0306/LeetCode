@@ -1,6 +1,6 @@
 class Solution {
     public int maxIceCream(int[] costs, int coins) {
-        final int MAX_COST = 100000;
+        int MAX_COST = Arrays.stream(costs).max().getAsInt();
         int[] freq = new int[MAX_COST + 1];
         for (int cost : costs) {
             freq[cost]++;
