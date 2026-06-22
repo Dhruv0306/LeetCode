@@ -10,10 +10,12 @@ class Solution {
 
         int i = 0;
         int[] ans = new int[2];
-        for(int j : nums){
-            if(map.get(j) > 1) continue;
+        for (int j : nums) {
+            if (map.get(j) > 1)
+                continue;
             ans[i++] = j;
-            if(i >= 2) return ans;
+            if (i >= 2)
+                return ans;
         }
         return ans;
     }
