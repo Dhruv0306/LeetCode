@@ -1,76 +1,69 @@
-import java.util.*;
-
 class Solution {
-    int n;
-    int[] dx = {-1, 1, 0, 0};
-    int[] dy = {0, 0, 1, -1};
-
     public int maximumSafenessFactor(List<List<Integer>> grid) {
-        n = grid.size();
+        int n = grid.size();
+        int[][] dist = new int[n][n];
 
         Queue<int[]> q = new LinkedList<>();
-        int[][] dist = new int[n][n];
-        boolean[][] vis = new boolean[n][n];
-
-        // Step 1: Push all thief cells
-        for (int r = 0; r < n; r++) {
-            for (int c = 0; c < n; c++) {
-                if (grid.get(r).get(c) == 1) {
-                    vis[r][c] = true;
-                    q.offer(new int[]{r, c});
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dist[i][j] = -1;
+                if (grid.get(i).get(j) == 1) {
+                    q.offer(new int[] { i, j });
+                    dist[i][j] = 0;
                 }
             }
         }
-
-        // Multi-source BFS
+        int[] x = { 1, -1, 0, 0 };
+        int[] y = { 0, 0, 1, -1 };
         while (!q.isEmpty()) {
             int[] curr = q.poll();
-            int r = curr[0], c = curr[1];
+            int r = curr[0];
+            int c = curr[1];
+            for (int k = 0; k < 4; k++) {
+                int r1 = r + x[k];
+                int c1 = c + y[k];
 
-            for (int d = 0; d < 4; d++) {
-                int nr = r + dx[d];
-                int nc = c + dy[d];
+                if (r1 >= 0 && r1 < n && c1 >= 0 && c1 < n && dist[r1][c1] == -1) {
+                    dist[r1][c1] = dist[r][c] + 1;
 
-                if (nr < 0 || nc < 0 || nr >= n || nc >= n) continue;
-                if (vis[nr][nc]) continue;
-
-                dist[nr][nc] = dist[r][c] + 1;
-                vis[nr][nc] = true;
-                q.offer(new int[]{nr, nc});
+                    q.offer(new int[] { r1, c1 });
+                }
             }
+
         }
 
-        // Step 2: Max heap
-        PriorityQueue<int[]> store = new PriorityQueue<>(
-            (a, b) -> b[0] - a[0]
-        );
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] - a[0]);
 
-        boolean[][] vis2 = new boolean[n][n];
-        store.offer(new int[]{dist[0][0], 0, 0});
+        pq.offer(new int[] { dist[0][0], 0, 0 });
 
-        while (!store.isEmpty()) {
-            int[] curr = store.poll();
-            int safeE = curr[0];
-            int r = curr[1];
-            int c = curr[2];
+        boolean[][] vis = new boolean[n][n];
+        vis[0][0] = true;
+        while (!pq.isEmpty()) {
 
-            if (vis2[r][c]) continue;
-            vis2[r][c] = true;
+            int[] c2 = pq.poll();
+            int wt = c2[0];
+            int r = c2[1];
+            int c = c2[2];
 
-            if (r == n - 1 && c == n - 1) return safeE;
-
-            for (int d = 0; d < 4; d++) {
-                int nr = r + dx[d];
-                int nc = c + dy[d];
-
-                if (nr < 0 || nc < 0 || nr >= n || nc >= n) continue;
-                if (vis2[nr][nc]) continue;
-
-                int newSafe = Math.min(safeE, dist[nr][nc]);
-                store.offer(new int[]{newSafe, nr, nc});
+            if (r == n - 1 && c == n - 1) {
+                return wt;
             }
+            for (int k = 0; k < 4; k++) {
+                int r1 = r + x[k];
+                int c1 = c + y[k];
+
+                if (r1 >= 0 && r1 < n && c1 >= 0 && c1 < n && vis[r1][c1] == false) {
+
+                    int nwt = Math.min(wt, dist[r1][c1]);
+                    pq.offer(new int[] { nwt, r1, c1 });
+                    vis[r1][c1] = true;
+                }
+            }
+
         }
 
         return 0;
+
     }
+
 }
