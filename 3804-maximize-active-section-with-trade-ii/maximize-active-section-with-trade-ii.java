@@ -1,4 +1,3 @@
-
 class SparseTable {
     int sparse[][];
 
@@ -6,14 +5,10 @@ class SparseTable {
         int n = nums.length;
         sparse = new int[21][n];
 
-        // Now we have to create a sparse tables with nums, where nums[i] = sum of zeroBlocks[i] + zeroBlocks[i + 1] 
-
-        // for zero length 
         for (int i = 0; i < n; i++) {
             sparse[0][i] = nums[i];
         }
 
-        // for length 2 - 20 
         for (int base = 1; base <= 20; base++) {
             for (int i = 0; i < n; i++) {
 
@@ -29,7 +24,6 @@ class SparseTable {
     int query(int l, int r) {
         if (l > r)
             return 0;
-        // return the max in range r to l 
         int base = 0;
         for (; base <= 20; base++) {
             if ((1 << base) > r - l + 1) {
@@ -70,7 +64,6 @@ class SegmentTree {
 
     int internalQuery(int node, int st, int en, int l, int r) {
         if (l <= st && en <= r) {
-            // we found the current node 
             return seg[node];
         }
         int mid = (st + en) >> 1;
@@ -115,7 +108,6 @@ class Solution {
             }
             int curBlockLen = r - idx;
             if (s.charAt(idx) == '0') {
-                // zero block 
                 zeroBlocks.add(curBlockLen);
                 zeroLeft.add(idx);
                 zeroRight.add(r - 1);
@@ -123,65 +115,45 @@ class Solution {
             idx = r;
         }
 
-        // Now zeroLeft, zeroRight - both are sorted 
         int m = zeroBlocks.size();
         seg = m;
         List<Integer> ans = new ArrayList<>();
-        // base case 
         if (m <= 1) {
             for (int i = 0; i < q.length; i++)
                 ans.add(cnt1);
             return ans;
         }
         int nums[] = new int[m - 1];
-        // prepar the nums 
         for (int bl = 0; bl < m - 1; bl++) {
             nums[bl] = zeroBlocks.get(bl) + zeroBlocks.get(bl + 1);
         }
-        // SparseTable sp = new SparseTable(nums); 
         SegmentTree sp = new SegmentTree(nums);
 
         for (int i = 0; i < q.length; i++) {
             int l = q[i][0], r = q[i][1];
 
-            // More than two segments. Now we have to apply the operation in [l...r] 
-            // We have three cases 
             int l_idx = lowerBound(zeroRight, l);
             int r_idx = upperBound(zeroLeft, r) - 1;
 
             if (l_idx > m - 1 || r_idx < 0 || l_idx >= r_idx) {
-                // left index can not be last, 
-                // right index can not be first 
-                // both cannot be same or l_idx > r_idx 
                 ans.add(cnt1);
                 continue;
             }
 
-            // leftMostBlock that falls or overlaps with l 
-            // it means for this zero block zeroLeft[i] < l & zeroRight[i] > l 
-            // for this case contribution = r - max(zeroLeft[i], l) + zeroBlock[i + 1] 
             int leftLen = zeroRight.get(l_idx) - Math.max(zeroLeft.get(l_idx), l) + 1;
 
-            // rightMostBlock that falls or verlaps with r means zerLeft[j] < r & zeroRight[j] > r
-            // here contri = min(r, zeroRight[j])  - zeroLeft[j] + zeroBlock[j - 1]
             int rightLen = Math.min(r, zeroRight.get(r_idx)) - zeroLeft.get(r_idx) + 1;
 
-            // If there are only two 0 blocks within the substring 
             if (l_idx + 1 == r_idx) {
                 int contribution = leftLen + rightLen;
                 ans.add(cnt1 + contribution);
                 continue;
             }
 
-            // If more than two blocks 
-            // left contribution 
             int leftContri = leftLen + zeroBlocks.get(l_idx + 1);
             int rightContri = rightLen + zeroBlocks.get(r_idx - 1);
 
-            // Now for all middle one's we have to find the max from the range 
-            // i.e, from (i + 1 ... j - 2 )
-            // This how to find efficiently ?? We can use Segment Tree / or sparse tables 
-            int middleContri = sp.query(l_idx + 1, r_idx - 2); // why r_idx - 2?? If r_idx -1, then it will be count r_idx again ( last pair again).
+            int middleContri = sp.query(l_idx + 1, r_idx - 2);
             ans.add(cnt1 + Math.max(leftContri, Math.max(rightContri, middleContri)));
         }
         return ans;
