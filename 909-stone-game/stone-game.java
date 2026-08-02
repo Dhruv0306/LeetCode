@@ -1,8 +1,6 @@
 class Solution {
     public boolean stoneGame(int[] piles) {
         int n = piles.length;
-        // if (n % 2 == 0)
-        //     return true;
 
         int[] dp = piles.clone();
         for (int i = n - 2; i >= 0; --i) {
