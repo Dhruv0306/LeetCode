@@ -10,6 +10,6 @@ class Solution {
                 dp[j] = Math.max(piles[i] - dp[j], piles[j] - dp[j - 1]);
             }
         }
-        return dp[n - 1] >= 0;
+        return dp[n - 1] > 0;
     }
 }
