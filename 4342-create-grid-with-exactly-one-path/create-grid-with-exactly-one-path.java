@@ -1,9 +1,9 @@
 class Solution {
     public String[] createGrid(int m, int n) {
         String[] ans = new String[m];
-        for(int i = 0; i < m; i++){
+        for (int i = 0; i < m; i++) {
             StringBuilder sb = new StringBuilder();
-            for(int j = 0; j < n; j++){
+            for (int j = 0; j < n; j++) {
                 sb.append((i == 0 || j == n - 1) ? '.' : '#');
             }
             ans[i] = sb.toString();
