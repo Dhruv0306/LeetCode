@@ -1,12 +1,15 @@
 class Solution {
     public int minimumSumSubarray(List<Integer> nums, int l, int r) {
-        int[] pre = new int[nums.size() + 1];
-        for (int i = 0; i < nums.size(); i++)
-            pre[i + 1] = pre[i] + nums.get(i);
-        return IntStream.rangeClosed(l, r)
-                .flatMap(k -> IntStream.range(0, pre.length - k).map(i -> pre[i + k] - pre[i]))
-                .filter(s -> s > 0)
-                .min()
-                .orElse(-1);
+        int n = nums.size(), best = Integer.MAX_VALUE;
+        for (int k = l; k <= r; k++) {
+            int s = nums.subList(0, k - 1).stream().mapToInt(x -> x).sum();
+            for (int i = k - 1; i < n; i++) {
+                s += nums.get(i);
+                if (0 < s && s < best)
+                    best = s;
+                s -= nums.get(i - k + 1);
+            }
+        }
+        return best == Integer.MAX_VALUE ? -1 : best;
     }
 }
